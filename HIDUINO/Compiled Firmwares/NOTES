@@ -1,0 +1,2 @@
+# Firmwares in the /Compiled Firmwares directory are without the Atmel DFU bootloader -- they can only be flashed 
+# to the 8u2 with an ISP. See the /DFU folder for firmwares compiled with the DFU. 
