@@ -1,7 +1,7 @@
 /***********************************************************************
- *  HIDUINO_MIDI Firmware v1.1
+ *  HIDUINO_MIDI Firmware v1.2
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design - January 2011
+ *  Music Technology: Interaction, Intelligence & Design - April 2011
  *  http://mtiid.calarts.edu
  *  http://www.dimitridiakopoulos.com
  *  Based on the LUFA MIDI Demo by Dean Camera 
@@ -54,13 +54,8 @@
 	/* Function Prototypes: */
 		void SetupHardware(void);
 		
-		void serialToUSB(void); 
-		void usbToSerial(uint8_t, uint8_t, uint8_t);
-		
-		void USART_GetByte(void); 		
-		void USART_SendByte(uint8_t data);		
-		
-		void delMsg(void); 
+		void MIDI_OUT(void); 
+		void MIDI_IN(void);
 
 		void EVENT_USB_Device_Connect(void);
 		void EVENT_USB_Device_Disconnect(void);

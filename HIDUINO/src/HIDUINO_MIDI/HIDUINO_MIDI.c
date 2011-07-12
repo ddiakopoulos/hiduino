@@ -1,7 +1,7 @@
 /***********************************************************************
- *  HIDUINO_MIDI Firmware v1.1
+ *  HIDUINO_MIDI Firmware v1.2
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design - January 2011
+ *  Music Technology: Interaction, Intelligence & Design - April 2011
  *  http://mtiid.calarts.edu
  *  http://www.dimitridiakopoulos.com
  *  Based on the LUFA MIDI Demo by Dean Camera 
@@ -10,20 +10,13 @@
 
 #include "HIDUINO_MIDI.h"
 
-volatile struct
-{
-	uint8_t TxLEDPulse;
-	uint8_t RxLEDPulse; 
-	uint8_t PingPongLEDPulse;
-} PulseMSRemaining;
-
 MIDI_EventPacket_t MIDI_FROM_ARDUINO; 
 
 // Counters to keep track of recieved bytes
 volatile uint8_t dCount = 0;
 volatile uint8_t complete = 0; 
 
-USB_ClassInfo_MIDI_Device_t Keyboard_MIDI_Interface =
+USB_ClassInfo_MIDI_Device_t MIDI_Interface =
 	{
 		.Config =
 			{
@@ -48,21 +41,13 @@ int main(void) {
 	
 	for (;;) { 
 
-		serialToUSB(); 
-	
-		MIDI_EventPacket_t ReceivedMIDIEvent;
+		MIDI_IN();
 		
-		if (MIDI_Device_ReceiveEventPacket(&Keyboard_MIDI_Interface, &ReceivedMIDIEvent)) {
-			if ((ReceivedMIDIEvent.Command == (MIDI_COMMAND_NOTE_ON >> 4)) && (ReceivedMIDIEvent.Data3 > 0)){
-			  LEDs_SetAllLEDs(LEDMASK_RX);
-			  usbToSerial(ReceivedMIDIEvent.Data1, ReceivedMIDIEvent.Data2, ReceivedMIDIEvent.Data3); 
-			}
-			else
-			  LEDs_SetAllLEDs(LEDS_NO_LEDS);	
-		}
+		MIDI_OUT(); 
 
-		MIDI_Device_USBTask(&Keyboard_MIDI_Interface);
+		MIDI_Device_USBTask(&MIDI_Interface);
 		USB_USBTask();
+		
 	}
 	
 }
@@ -103,53 +88,65 @@ void EVENT_USB_Device_Disconnect(void) {
 // Event handler for the library USB Configuration Changed event. */
 void EVENT_USB_Device_ConfigurationChanged(void) {
 	bool ConfigSuccess = true;
-	ConfigSuccess &= MIDI_Device_ConfigureEndpoints(&Keyboard_MIDI_Interface);
+	ConfigSuccess &= MIDI_Device_ConfigureEndpoints(&MIDI_Interface);
 	LEDs_SetAllLEDs(ConfigSuccess ? LEDMASK_USB_READY : LEDMASK_USB_ERROR);
 }
 
 // Event handler for the library USB Control Request reception event. */
 void EVENT_USB_Device_ControlRequest(void) {
-	MIDI_Device_ProcessControlRequest(&Keyboard_MIDI_Interface);
+	MIDI_Device_ProcessControlRequest(&MIDI_Interface);
 }
 
+// MIDI_IN routine. Host -> Arduino.  
+void MIDI_IN(void) {
 
-// Reads our Arduino/MIDI protocol via USART and relays as properly formed MIDI messages over USB 
-void serialToUSB(void) {
+	MIDI_EventPacket_t ReceivedMIDIEvent;
 
-	USART_GetByte(); 
+	if (MIDI_Device_ReceiveEventPacket(&MIDI_Interface, &ReceivedMIDIEvent)) {
+		Serial_TxByte(ReceivedMIDIEvent.Data1);
+		Serial_TxByte(ReceivedMIDIEvent.Data2); 
+		Serial_TxByte(ReceivedMIDIEvent.Data3); 
+	}
 	
-	uint8_t Channel = 0; 
-	
-	if (MIDI_FROM_ARDUINO.Data3 > 0 && complete == 1) {
-	
-		complete = 0; 
+}
+
+// MIDI_OUT routine. Arduino -> Host.  
+void MIDI_OUT(void) {
+
+	if (complete == 1) {
+
+		complete = 0;
 		
-		MIDI_EventPacket_t MIDIEvent = (MIDI_EventPacket_t) {
-				.CableNumber = 0,
-				.Command     = MIDI_FROM_ARDUINO.Data1 >> 4,
-				.Data1       = MIDI_FROM_ARDUINO.Data1 | Channel, 
-				.Data2       = MIDI_FROM_ARDUINO.Data2, 
-				.Data3       = MIDI_FROM_ARDUINO.Data3,		
-			};
-			
-		MIDI_Device_SendEventPacket(&Keyboard_MIDI_Interface, &MIDIEvent);
-		MIDI_Device_Flush(&Keyboard_MIDI_Interface);
+		uint8_t Channel = 0;  
 
+		MIDI_EventPacket_t MIDIEvent = (MIDI_EventPacket_t) {
+			.CableNumber = 0,
+			.Command     = MIDI_FROM_ARDUINO.Data1 >> 4,
+			.Data1       = MIDI_FROM_ARDUINO.Data1 | Channel, 
+			.Data2       = MIDI_FROM_ARDUINO.Data2, 
+			.Data3       = MIDI_FROM_ARDUINO.Data3,		
+		};
+		
+		
+		MIDI_Device_SendEventPacket(&MIDI_Interface, &MIDIEvent);
+		MIDI_Device_Flush(&MIDI_Interface);
+		
 	}
 	
 }
 
 
-// Keep track of incoming bytes over USART
-void USART_GetByte() {
-
-	if (Serial_IsCharReceived()) {
-
-		uint8_t ReceivedByte = Serial_RxByte(); 
-			
+// Interrupt helper for MIDI_OUT. 
+ISR(USART1_RX_vect, ISR_BLOCK) {
+	
+	uint8_t ReceivedByte = UDR1;
+	
+	// Basic MIDI parser
+	if (USB_DeviceState == DEVICE_STATE_Configured) {
+	
 		if ( (ReceivedByte >> 7 ) == 1 ) {
 			dCount = 0; 
-			delMsg(); 
+			memset(&MIDI_FROM_ARDUINO, 0, sizeof(MIDI_EventPacket_t));
 			MIDI_FROM_ARDUINO.Data1 = ReceivedByte;
 		}
 			
@@ -166,26 +163,4 @@ void USART_GetByte() {
 		
 	}
 	
-}
-
-
-// usb to serial sender
-void usbToSerial(uint8_t data1, uint8_t data2, uint8_t data3) {
-	USART_SendByte(data1);
-	USART_SendByte(data2);
-	USART_SendByte(data3); 	
-}
-
-
-// push a single the byte over USART
-void USART_SendByte(uint8_t data) { 
-	Serial_TxByte(data); 
-}
-
-
-void delMsg() {
-	MIDI_FROM_ARDUINO.Data1 = 0; 
-	MIDI_FROM_ARDUINO.Data2 = 0; 
-	MIDI_FROM_ARDUINO.Data3 = 0; 
-	complete = 0; 
 }
