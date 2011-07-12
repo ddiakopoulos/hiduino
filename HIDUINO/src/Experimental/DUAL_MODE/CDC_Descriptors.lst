@@ -1,0 +1,256 @@
+   1               		.file	"CDC_Descriptors.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               		.section	.text.Serial_GetDescriptor,"ax",@progbits
+  17               	.global	Serial_GetDescriptor
+  19               	Serial_GetDescriptor:
+  20               	.LFB81:
+  21               	.LSM0:
+  22               	.LVL0:
+  23               	/* prologue: function */
+  24               	/* frame size = 0 */
+  25 0000 DA01      		movw r26,r20
+  26               	.LSM1:
+  27 0002 9230      		cpi r25,lo8(2)
+  28               	.LVL1:
+  29 0004 01F0      		breq .L4
+  30               	.LVL2:
+  31 0006 9330      		cpi r25,lo8(3)
+  32 0008 01F0      		breq .L5
+  33 000a 9130      		cpi r25,lo8(1)
+  34 000c 01F4      		brne .L2
+  35 000e E0E0      		ldi r30,lo8(Serial_DeviceDescriptor)
+  36 0010 F0E0      		ldi r31,hi8(Serial_DeviceDescriptor)
+  37               	.LVL3:
+  38 0012 22E1      		ldi r18,lo8(18)
+  39 0014 30E0      		ldi r19,hi8(18)
+  40               	.LVL4:
+  41 0016 00C0      		rjmp .L6
+  42               	.LVL5:
+  43               	.L4:
+  44 0018 E0E0      		ldi r30,lo8(Serial_ConfigurationDescriptor)
+  45 001a F0E0      		ldi r31,hi8(Serial_ConfigurationDescriptor)
+  46               	.LVL6:
+  47 001c 23E4      		ldi r18,lo8(67)
+  48 001e 30E0      		ldi r19,hi8(67)
+  49               	.LVL7:
+  50 0020 00C0      		rjmp .L6
+  51               	.LVL8:
+  52               	.L5:
+  53               	.LSM2:
+  54 0022 8130      		cpi r24,lo8(1)
+  55 0024 01F0      		breq .L8
+  56 0026 8130      		cpi r24,lo8(1)
+  57 0028 00F0      		brlo .L7
+  58 002a 8230      		cpi r24,lo8(2)
+  59 002c 01F4      		brne .L2
+  60 002e 00C0      		rjmp .L12
+  61               	.L7:
+  62               	.LBB2:
+  63               	.LSM3:
+  64 0030 E0E0      		ldi r30,lo8(Serial_LanguageString)
+  65 0032 F0E0      		ldi r31,hi8(Serial_LanguageString)
+  66               	/* #APP */
+  67               	 ;  210 "CDC_Descriptors.c" 1
+  68 0034 8491      		lpm r24, Z
+  69               		
+  70               	 ;  0 "" 2
+  71               	.LVL9:
+  72               	/* #NOAPP */
+  73 0036 00C0      		rjmp .L11
+  74               	.LVL10:
+  75               	.L8:
+  76               	.LBE2:
+  77               	.LBB3:
+  78               	.LSM4:
+  79 0038 E0E0      		ldi r30,lo8(Serial_ManufacturerString)
+  80 003a F0E0      		ldi r31,hi8(Serial_ManufacturerString)
+  81               	/* #APP */
+  82               	 ;  214 "CDC_Descriptors.c" 1
+  83 003c 8491      		lpm r24, Z
+  84               		
+  85               	 ;  0 "" 2
+  86               	.LVL11:
+  87               	/* #NOAPP */
+  88 003e 00C0      		rjmp .L11
+  89               	.LVL12:
+  90               	.L12:
+  91               	.LBE3:
+  92               	.LBB4:
+  93               	.LSM5:
+  94 0040 E0E0      		ldi r30,lo8(Serial_ProductString)
+  95 0042 F0E0      		ldi r31,hi8(Serial_ProductString)
+  96               	/* #APP */
+  97               	 ;  218 "CDC_Descriptors.c" 1
+  98 0044 8491      		lpm r24, Z
+  99               		
+ 100               	 ;  0 "" 2
+ 101               	.LVL13:
+ 102               	/* #NOAPP */
+ 103               	.L11:
+ 104               	.LBE4:
+ 105 0046 282F      		mov r18,r24
+ 106               	.LVL14:
+ 107 0048 30E0      		ldi r19,lo8(0)
+ 108               	.LVL15:
+ 109 004a 00C0      		rjmp .L6
+ 110               	.LVL16:
+ 111               	.L2:
+ 112 004c E0E0      		ldi r30,lo8(0)
+ 113 004e F0E0      		ldi r31,hi8(0)
+ 114               	.LVL17:
+ 115 0050 20E0      		ldi r18,lo8(0)
+ 116 0052 30E0      		ldi r19,hi8(0)
+ 117               	.LVL18:
+ 118               	.L6:
+ 119               	.LSM6:
+ 120 0054 ED93      		st X+,r30
+ 121 0056 FC93      		st X,r31
+ 122               	.LSM7:
+ 123 0058 C901      		movw r24,r18
+ 124               	.LVL19:
+ 125               	/* epilogue start */
+ 126 005a 0895      		ret
+ 127               	.LFE81:
+ 129               	.global	Serial_DeviceDescriptor
+ 130               		.section	.progmem.data,"a",@progbits
+ 133               	Serial_DeviceDescriptor:
+ 134 0000 12        		.byte	18
+ 135 0001 01        		.byte	1
+ 136 0002 1001      		.word	272
+ 137 0004 02        		.byte	2
+ 138 0005 00        		.byte	0
+ 139 0006 00        		.byte	0
+ 140 0007 08        		.byte	8
+ 141 0008 EB03      		.word	1003
+ 142 000a 4C20      		.word	8268
+ 143 000c 0100      		.word	1
+ 144 000e 01        		.byte	1
+ 145 000f 02        		.byte	2
+ 146 0010 DC        		.byte	-36
+ 147 0011 01        		.byte	1
+ 148               	.global	Serial_ConfigurationDescriptor
+ 151               	Serial_ConfigurationDescriptor:
+ 152 0012 09        		.byte	9
+ 153 0013 02        		.byte	2
+ 154 0014 4300      		.word	67
+ 155 0016 02        		.byte	2
+ 156 0017 01        		.byte	1
+ 157 0018 00        		.byte	0
+ 158 0019 C0        		.byte	-64
+ 159 001a 32        		.byte	50
+ 160 001b 09        		.byte	9
+ 161 001c 04        		.byte	4
+ 162 001d 00        		.byte	0
+ 163 001e 00        		.byte	0
+ 164 001f 01        		.byte	1
+ 165 0020 02        		.byte	2
+ 166 0021 02        		.byte	2
+ 167 0022 01        		.byte	1
+ 168 0023 00        		.byte	0
+ 169 0024 05        		.byte	5
+ 170 0025 24        		.byte	36
+ 171 0026 00        		.byte	0
+ 172 0027 01        		.byte	1
+ 173 0028 10        		.byte	16
+ 174 0029 05        		.byte	5
+ 175 002a 24        		.byte	36
+ 176 002b 01        		.byte	1
+ 177 002c 03        		.byte	3
+ 178 002d 01        		.byte	1
+ 179 002e 04        		.byte	4
+ 180 002f 24        		.byte	36
+ 181 0030 02        		.byte	2
+ 182 0031 06        		.byte	6
+ 183 0032 05        		.byte	5
+ 184 0033 24        		.byte	36
+ 185 0034 06        		.byte	6
+ 186 0035 00        		.byte	0
+ 187 0036 01        		.byte	1
+ 188 0037 07        		.byte	7
+ 189 0038 05        		.byte	5
+ 190 0039 81        		.byte	-127
+ 191 003a 03        		.byte	3
+ 192 003b 0800      		.word	8
+ 193 003d FF        		.byte	-1
+ 194 003e 09        		.byte	9
+ 195 003f 04        		.byte	4
+ 196 0040 01        		.byte	1
+ 197 0041 00        		.byte	0
+ 198 0042 02        		.byte	2
+ 199 0043 0A        		.byte	10
+ 200 0044 00        		.byte	0
+ 201 0045 00        		.byte	0
+ 202 0046 00        		.byte	0
+ 203 0047 07        		.byte	7
+ 204 0048 05        		.byte	5
+ 205 0049 03        		.byte	3
+ 206 004a 02        		.byte	2
+ 207 004b 4000      		.word	64
+ 208 004d 00        		.byte	0
+ 209 004e 07        		.byte	7
+ 210 004f 05        		.byte	5
+ 211 0050 82        		.byte	-126
+ 212 0051 02        		.byte	2
+ 213 0052 4000      		.word	64
+ 214 0054 00        		.byte	0
+ 215               	.global	Serial_LanguageString
+ 218               	Serial_LanguageString:
+ 219 0055 04        		.byte	4
+ 220 0056 03        		.byte	3
+ 221 0057 0904      		.word	1033
+ 222               	.global	Serial_ManufacturerString
+ 225               	Serial_ManufacturerString:
+ 226 0059 10        		.byte	16
+ 227 005a 03        		.byte	3
+ 228 005b 4800      		.string	"H"
+ 229 005d 4900      		.string	"I"
+ 230 005f 4400      		.string	"D"
+ 231 0061 5500      		.string	"U"
+ 232 0063 4900      		.string	"I"
+ 233 0065 4E00      		.string	"N"
+ 234 0067 4F00      		.string	"O"
+ 235 0069 00        		.string	""
+ 236 006a 00        		.string	""
+ 237               	.global	Serial_ProductString
+ 240               	Serial_ProductString:
+ 241 006b 1E        		.byte	30
+ 242 006c 03        		.byte	3
+ 243 006d 4800      		.string	"H"
+ 244 006f 4900      		.string	"I"
+ 245 0071 4400      		.string	"D"
+ 246 0073 5500      		.string	"U"
+ 247 0075 4900      		.string	"I"
+ 248 0077 4E00      		.string	"N"
+ 249 0079 4F00      		.string	"O"
+ 250 007b 2000      		.string	" "
+ 251 007d 5300      		.string	"S"
+ 252 007f 6500      		.string	"e"
+ 253 0081 7200      		.string	"r"
+ 254 0083 6900      		.string	"i"
+ 255 0085 6100      		.string	"a"
+ 256 0087 6C00      		.string	"l"
+ 257 0089 00        		.string	""
+ 258 008a 00        		.string	""
+ 283               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 CDC_Descriptors.c
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:2      *ABS*:0000003f __SREG__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:3      *ABS*:0000003e __SP_H__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:4      *ABS*:0000003d __SP_L__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:5      *ABS*:00000034 __CCP__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:19     .text.Serial_GetDescriptor:00000000 Serial_GetDescriptor
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:133    .progmem.data:00000000 Serial_DeviceDescriptor
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:151    .progmem.data:00000012 Serial_ConfigurationDescriptor
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:218    .progmem.data:00000055 Serial_LanguageString
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:225    .progmem.data:00000059 Serial_ManufacturerString
+C:\Users\Dimitri\AppData\Local\Temp/ccNpBODb.s:240    .progmem.data:0000006b Serial_ProductString
+
+NO UNDEFINED SYMBOLS
