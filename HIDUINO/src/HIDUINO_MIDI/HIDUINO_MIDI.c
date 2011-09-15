@@ -64,7 +64,7 @@ void SetupHardware(void) {
 	UCSR1B |= (1 << RXCIE1) | (1 << TXCIE1);
 	
 	// Hardware Initialization  
-	Serial_Init(9600, false);
+	Serial_Init(31250, false);
 	
 	LEDs_Init();
 	USB_Init();

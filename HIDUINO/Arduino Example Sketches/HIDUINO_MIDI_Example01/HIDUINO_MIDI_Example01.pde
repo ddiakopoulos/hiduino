@@ -2,15 +2,14 @@
  *  HIDUINO_MIDI_Example01
  *  MIDI Output
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design, February 2011
+ *  Music Technology: Interaction, Intelligence & Design, September 2011
+ *  Revision 2.0
  *  http://mtiid.calarts.edu
  *************************************************************************/
 
-#include <HIDUINO_MIDI_Lib.h>
+#include <MIDI.h>
 
-void setup() {
-  Serial.begin(9600);
-}
+void setup() {}
 
 
 void loop() {
