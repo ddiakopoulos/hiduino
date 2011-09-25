@@ -59,7 +59,7 @@ USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 
 	.ManufacturerStrIndex   = 0x01,
 	.ProductStrIndex        = 0x02,
-	.SerialNumStrIndex      = NO_DESCRIPTOR,
+	.SerialNumStrIndex      = USE_INTERNAL_SERIAL,
 
 	.NumberOfConfigurations = FIXED_NUM_CONFIGURATIONS
 };
@@ -272,9 +272,9 @@ USB_Descriptor_String_t PROGMEM ManufacturerString =
  */
 USB_Descriptor_String_t PROGMEM ProductString =
 {
-	.Header                 = {.Size = USB_STRING_LEN(10), .Type = DTYPE_String},
+	.Header                 = {.Size = USB_STRING_LEN(8), .Type = DTYPE_String},
 
-	.UnicodeString          = L"HIDUINO Device"
+	.UnicodeString          = L"HIDUINO"
 };
 
 /** This function is called by the library when in device mode, and must be overridden (see library "USB Descriptors"
