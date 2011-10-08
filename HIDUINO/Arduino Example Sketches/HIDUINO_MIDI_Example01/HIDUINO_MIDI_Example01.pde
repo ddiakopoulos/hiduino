@@ -1,39 +1,29 @@
+
+
 /***********************************************************************
  *  HIDUINO_MIDI_Example01
  *  MIDI Output
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design, September 2011
- *  Revision 2.0
+ *  Music Technology: Interaction, Intelligence & Design, October 2011
+ *  Revision 2.1
  *  http://mtiid.calarts.edu
  *************************************************************************/
 
 #include <MIDI.h>
 
-void setup() {}
-
+void setup() {
+    MIDI.begin(MIDI_CHANNEL_OMNI);
+}
 
 void loop() {
 
-  // Send Note On
   for (int i = 0; i < 24; i++) {
-    MIDI.sendNoteOn(i, i*2); 
-    delay(25); 
+    MIDI.sendNoteOn(i, i*2, 1); 
+    delay(75); 
   }
-  
-  // Send Note Off
-  for (int i = 0; i < 24; i++) {
-    MIDI.sendNoteOff(i, i*2); 
-    delay(25); 
-  }
-  
-  // Send Control Change
-  for (int i = 0; i < 24; i++) {
-    MIDI.sendControlChange(i, i*2); 
-    delay(25); 
-  }
-  
+
   // Never actually use delays -- set up an interrupt based timer instead! 
-  delay(500); 
+  delay(2000); 
 
 }
 
