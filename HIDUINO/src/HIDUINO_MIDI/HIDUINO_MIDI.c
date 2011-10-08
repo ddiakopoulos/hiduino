@@ -1,7 +1,7 @@
 /***********************************************************************
- *  HIDUINO_MIDI Firmware v1.2
+ *  HIDUINO_MIDI Firmware v1.5
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design - April 2011
+ *  Music Technology: Interaction, Intelligence & Design - October 2011
  *  http://mtiid.calarts.edu
  *  http://www.dimitridiakopoulos.com
  *  Based on the LUFA MIDI Demo by Dean Camera 
@@ -15,6 +15,9 @@ MIDI_EventPacket_t MIDI_FROM_ARDUINO;
 // Counters to keep track of recieved bytes
 volatile uint8_t dCount = 0;
 volatile uint8_t complete = 0; 
+
+uint8_t tx_ticks = 0; 
+uint8_t rx_ticks = 0; 
 
 USB_ClassInfo_MIDI_Device_t MIDI_Interface =
 	{
@@ -34,15 +37,27 @@ USB_ClassInfo_MIDI_Device_t MIDI_Interface =
 
 	
 int main(void) {
-
+	
+	LEDs_TurnOffLEDs(LEDS_LED1);
+	LEDs_TurnOffLEDs(LEDS_LED2);
+	
 	SetupHardware();
 	
 	sei();
 	
 	for (;;) { 
-
-		MIDI_IN();
 		
+		if (tx_ticks) 
+			tx_ticks--;
+		else if (tx_ticks == 0)
+			LEDs_TurnOffLEDs(LEDS_LED1);		
+							
+		if (rx_ticks) 
+			rx_ticks--;
+		else if (rx_ticks == 0)
+			LEDs_TurnOffLEDs(LEDS_LED2);
+		
+		MIDI_IN();
 		MIDI_OUT(); 
 
 		MIDI_Device_USBTask(&MIDI_Interface);
@@ -60,9 +75,6 @@ void SetupHardware(void) {
 	MCUSR &= ~(1 << WDRF);
 	wdt_disable();
 	
-	// Serial Interrupts
-	UCSR1B |= (1 << RXCIE1) | (1 << TXCIE1);
-	
 	// Hardware Initialization  
 	Serial_Init(31250, false);
 	
@@ -71,7 +83,11 @@ void SetupHardware(void) {
 	
 	// Start the flush timer so that overflows occur rapidly to push received bytes to the USB interface
 	TCCR0B = (1 << CS02);
-
+			
+	// Serial Interrupts
+	UCSR1B = 0;
+	UCSR1B = ((1 << RXCIE1) | (1 << TXEN1) | (1 << RXEN1));
+	
 }
 
 
@@ -106,23 +122,23 @@ void MIDI_IN(void) {
 		Serial_TxByte(ReceivedMIDIEvent.Data1);
 		Serial_TxByte(ReceivedMIDIEvent.Data2); 
 		Serial_TxByte(ReceivedMIDIEvent.Data3); 
+		LEDs_TurnOnLEDs(LEDS_LED2);
+		rx_ticks = 5000; 
 	}
 	
 }
 
 // MIDI_OUT routine. Arduino -> Host.  
 void MIDI_OUT(void) {
-
+	
 	if (complete == 1) {
-
-		complete = 0;
 		
-		uint8_t Channel = 0;  
-
+		complete = 0;
+	
 		MIDI_EventPacket_t MIDIEvent = (MIDI_EventPacket_t) {
 			.CableNumber = 0,
 			.Command     = MIDI_FROM_ARDUINO.Data1 >> 4,
-			.Data1       = MIDI_FROM_ARDUINO.Data1 | Channel, 
+			.Data1       = MIDI_FROM_ARDUINO.Data1 | 15, 
 			.Data2       = MIDI_FROM_ARDUINO.Data2, 
 			.Data3       = MIDI_FROM_ARDUINO.Data3,		
 		};
@@ -131,16 +147,19 @@ void MIDI_OUT(void) {
 		MIDI_Device_SendEventPacket(&MIDI_Interface, &MIDIEvent);
 		MIDI_Device_Flush(&MIDI_Interface);
 		
+		LEDs_TurnOnLEDs(LEDS_LED1);
+		tx_ticks = 5000; 
+
 	}
 	
+	
 }
-
 
 // Interrupt helper for MIDI_OUT. 
 ISR(USART1_RX_vect, ISR_BLOCK) {
 	
 	uint8_t ReceivedByte = UDR1;
-	
+			
 	// Basic MIDI parser
 	if (USB_DeviceState == DEVICE_STATE_Configured) {
 	
@@ -158,7 +177,7 @@ ISR(USART1_RX_vect, ISR_BLOCK) {
 		else if ( ((ReceivedByte >> 7) == 0) && (dCount == 1) ) {
 			dCount = 0; 
 			MIDI_FROM_ARDUINO.Data3 = ReceivedByte;
-			complete = 1; 
+			complete = 1;
 		}
 		
 	}
