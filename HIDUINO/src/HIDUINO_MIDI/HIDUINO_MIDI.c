@@ -138,7 +138,7 @@ void MIDI_OUT(void) {
 		MIDI_EventPacket_t MIDIEvent = (MIDI_EventPacket_t) {
 			.CableNumber = 0,
 			.Command     = MIDI_FROM_ARDUINO.Data1 >> 4,
-			.Data1       = MIDI_FROM_ARDUINO.Data1 | 15, 
+			.Data1       = MIDI_FROM_ARDUINO.Data1, 
 			.Data2       = MIDI_FROM_ARDUINO.Data2, 
 			.Data3       = MIDI_FROM_ARDUINO.Data3,		
 		};
@@ -160,7 +160,7 @@ ISR(USART1_RX_vect, ISR_BLOCK) {
 	
 	uint8_t ReceivedByte = UDR1;
 			
-	// Basic MIDI parser
+	// Naieve MIDI parser. TODO: full MIDI protocol support. 
 	if (USB_DeviceState == DEVICE_STATE_Configured) {
 	
 		if ( (ReceivedByte >> 7 ) == 1 ) {
