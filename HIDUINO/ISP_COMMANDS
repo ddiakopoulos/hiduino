@@ -1,7 +1,0 @@
-# Example commands for flashing HIDUINO firmwares using an ISP (AVR-ISPMkII)
-
-# Flashing the default arduino usbserial firmware: 
-avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:usbserial.hex -U lfuse:w:0xFF:m -U hfuse:w:0xD9:m -U efuse:w:0xF4:m -U lock:w:0x0F:m
-
-# Flashing the HIDUINO_MIDI firmware: 
-avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:HIDUINO_MIDI.hex -U lfuse:w:0xFF:m -U hfuse:w:0xD9:m -U efuse:w:0xF4:m -U lock:w:0x0F:m
