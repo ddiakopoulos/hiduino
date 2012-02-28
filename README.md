@@ -11,8 +11,7 @@ Interested in seeing what HIDUINO can do? Check out the [NotomotoN, a robotic pe
 The full list of requirements is listed on the wiki. At a bare minimum, you'll need: 
 
 * Crosspack for OSX or WinAVR for Windows
-* Arduino 1.0+ - [Arduino MIDI Library v 3.2](http://arduino.cc/playground/Main/MIDILibrary)
-* Arduino < 1.0 - [Arduino MIDI Library v3.1.1](http://arduino.cc/playground/Main/MIDILibrary)
+* Arduino 1.0 - [Arduino MIDI Library v 3.2](http://arduino.cc/playground/Main/MIDILibrary)
 * (Recommended) [AVRISPMKII](http://www.atmel.com/tools/AVRISPMKII.aspx)
 
 ## Quickstart
