@@ -1,6 +1,6 @@
 # HIDUINO
 
-The HIDUINO project aims to provide precompiled firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega2560, and Due. These firmwares are built using [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu).
+The HIDUINO project aims to provide precompiled firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega2560, and Due. These firmwares are built using the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu).
 
 The [NotomotoN](http://vimeo.com/33365051) is a good example of HIDUINO in action!
 
