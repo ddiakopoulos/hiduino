@@ -1,12 +1,8 @@
-
-
 /***********************************************************************
  *  HIDUINO_MIDI_Example01
- *  MIDI Output
- *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design, October 2011
- *  Revision 2.1
- *  http://mtiid.calarts.edu
+ *  Example: MIDI Output
+ *  by Dimitri Diakopoulos (http:// www.dimitridiakopoulos.com)
+ *  Last Updated: 17 January 2013
  *************************************************************************/
 
 #include <MIDI.h>
@@ -22,9 +18,8 @@ void loop() {
     delay(75); 
   }
 
-  // Never actually use delays -- set up an interrupt based timer instead! 
+  // Delay == Bad! Set up an interrupt based timer instead 
+  // (or something like Blink Without Delay)
   delay(2000); 
 
 }
-
-
