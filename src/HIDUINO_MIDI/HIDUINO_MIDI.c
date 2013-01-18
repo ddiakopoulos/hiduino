@@ -1,18 +1,15 @@
 /***********************************************************************
- *  HIDUINO_MIDI Firmware v1.5
+ *  HIDUINO_MIDI Firmware
  *  by Dimitri Diakopoulos (http://www.dimitridiakopoulos.com)
- *  Music Technology: Interaction, Intelligence & Design - October 2011
- *  http://mtiid.calarts.edu
- *  http://www.dimitridiakopoulos.com
  *  Based on the LUFA MIDI Demo by Dean Camera 
- * 		- http://www.fourwalledcubicle.com/LUFA.php
+ *  (http://www.fourwalledcubicle.com/LUFA.php)
  ***********************************************************************/
 
 #include "HIDUINO_MIDI.h"
 
 MIDI_EventPacket_t MIDI_FROM_ARDUINO; 
 
-// Counters to keep track of recieved bytes
+// Counters to keep track of recieved MIDI bytes
 volatile uint8_t dCount = 0;
 volatile uint8_t complete = 0; 
 
@@ -81,7 +78,8 @@ void SetupHardware(void) {
 	LEDs_Init();
 	USB_Init();
 	
-	// Start the flush timer so that overflows occur rapidly to push received bytes to the USB interface
+	// Start the flush timer so that overflows occur rapidly to
+	// push received bytes to the USB interface
 	TCCR0B = (1 << CS02);
 			
 	// Serial Interrupts
@@ -91,24 +89,24 @@ void SetupHardware(void) {
 }
 
 
-// Event handler for the library USB Connection event. */
+// Event handler for the library USB Connection event.
 void EVENT_USB_Device_Connect(void) {
 	LEDs_SetAllLEDs(LEDMASK_USB_ENUMERATING);
 }
 
-// Event handler for the library USB Disconnection event. */
+// Event handler for the library USB Disconnection event.
 void EVENT_USB_Device_Disconnect(void) {
 	LEDs_SetAllLEDs(LEDMASK_USB_NOTREADY);
 }
 
-// Event handler for the library USB Configuration Changed event. */
+// Event handler for the library USB Configuration Changed event.
 void EVENT_USB_Device_ConfigurationChanged(void) {
 	bool ConfigSuccess = true;
 	ConfigSuccess &= MIDI_Device_ConfigureEndpoints(&MIDI_Interface);
 	LEDs_SetAllLEDs(ConfigSuccess ? LEDMASK_USB_READY : LEDMASK_USB_ERROR);
 }
 
-// Event handler for the library USB Control Request reception event. */
+// Event handler for the library USB Control Request reception event.
 void EVENT_USB_Device_ControlRequest(void) {
 	MIDI_Device_ProcessControlRequest(&MIDI_Interface);
 }
@@ -143,7 +141,6 @@ void MIDI_OUT(void) {
 			.Data3       = MIDI_FROM_ARDUINO.Data3,		
 		};
 		
-		
 		MIDI_Device_SendEventPacket(&MIDI_Interface, &MIDIEvent);
 		MIDI_Device_Flush(&MIDI_Interface);
 		
@@ -155,12 +152,12 @@ void MIDI_OUT(void) {
 	
 }
 
-// Interrupt helper for MIDI_OUT. 
+// Interrupt for MIDI_OUT. 
 ISR(USART1_RX_vect, ISR_BLOCK) {
 	
 	uint8_t ReceivedByte = UDR1;
 			
-	// Naieve MIDI parser. TODO: full MIDI protocol support. 
+	// Very basic MIDI parser. TODO: full MIDI protocol support. 
 	if (USB_DeviceState == DEVICE_STATE_Configured) {
 	
 		if ( (ReceivedByte >> 7 ) == 1 ) {
