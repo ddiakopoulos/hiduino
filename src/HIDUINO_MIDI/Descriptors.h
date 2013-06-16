@@ -1,13 +1,13 @@
 /*
              LUFA Library
-     Copyright (C) Dean Camera, 2010.
+     Copyright (C) Dean Camera, 2013.
 
   dean [at] fourwalledcubicle [dot] com
            www.lufa-lib.org
 */
 
 /*
-  Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
+  Copyright 2013  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
@@ -18,7 +18,7 @@
   advertising or publicity pertaining to distribution of the
   software without specific, written prior permission.
 
-  The author disclaim all warranties with regard to this
+  The author disclaims all warranties with regard to this
   software, including all implied warranties of merchantability
   and fitness.  In no event shall the author be liable for any
   special, indirect or consequential damages or any damages
@@ -42,11 +42,11 @@
 		#include <avr/pgmspace.h>
 
 	/* Macros: */
-		/** Endpoint number of the MIDI streaming data IN endpoint, for device-to-host data transfers. */
-		#define MIDI_STREAM_IN_EPNUM        2
+		/** Endpoint address of the MIDI streaming data IN endpoint, for device-to-host data transfers. */
+		#define MIDI_STREAM_IN_EPADDR       (ENDPOINT_DIR_IN  | 2)
 
-		/** Endpoint number of the MIDI streaming data OUT endpoint, for host-to-device data transfers. */
-		#define MIDI_STREAM_OUT_EPNUM       1
+		/** Endpoint address of the MIDI streaming data OUT endpoint, for host-to-device data transfers. */
+		#define MIDI_STREAM_OUT_EPADDR      (ENDPOINT_DIR_OUT | 1)
 
 		/** Endpoint size in bytes of the Audio isochronous streaming data IN and OUT endpoints. */
 		#define MIDI_STREAM_EPSIZE          64
@@ -59,8 +59,12 @@
 		typedef struct
 		{
 			USB_Descriptor_Configuration_Header_t     Config;
+
+			// MIDI Audio Control Interface
 			USB_Descriptor_Interface_t                Audio_ControlInterface;
 			USB_Audio_Descriptor_Interface_AC_t       Audio_ControlInterface_SPC;
+
+			// MIDI Audio Streaming Interface
 			USB_Descriptor_Interface_t                Audio_StreamInterface;
 			USB_MIDI_Descriptor_AudioInterface_AS_t   Audio_StreamInterface_SPC;
 			USB_MIDI_Descriptor_InputJack_t           MIDI_In_Jack_Emb;
@@ -72,6 +76,17 @@
 			USB_Audio_Descriptor_StreamEndpoint_Std_t MIDI_Out_Jack_Endpoint;
 			USB_MIDI_Descriptor_Jack_Endpoint_t       MIDI_Out_Jack_Endpoint_SPC;
 		} USB_Descriptor_Configuration_t;
+
+		/** Enum for the device string descriptor IDs within the device. Each string descriptor should
+		 *  have a unique ID index associated with it, which can be used to refer to the string from
+		 *  other descriptors.
+		 */
+		enum StringDescriptors_t
+		{
+		    STRING_ID_Language      = 0, /**< Supported Languages string descriptor ID (must be zero) */
+		    STRING_ID_Manufacturer  = 1, /**< Manufacturer string ID */
+		    STRING_ID_Product       = 2, /**< Product string ID */
+		};
 
 	/* Function Prototypes: */
 		uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
