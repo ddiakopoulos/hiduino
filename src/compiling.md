@@ -1,1 +1,0 @@
-These firmwares can be compiled with the latest LUFA (130303). Put them in the Lufa/Projects folder and run make.
