@@ -1,14 +1,12 @@
 # HIDUINO
 
-The HIDUINO project aims to provide precompiled firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega2560, or Due. These firmwares are built using the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu).
+The HIDUINO project aims to provide precompiled firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega2560, or Due. These firmwares are built using the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). HIDUINO relies on Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip boards (e.g. Leonardo), nor older models that used an FTDI chip as USB controller (e.g. Duemilanove). 
 
 Some good examples of HIDUINO:
 
 [mHzKontrol](http://www.youtube.com/watch?v=f4GCczAaD8A)
 
 [NotomotoN](http://vimeo.com/33365051)
-
-[VR Controller](http://www.youtube.com/watch?v=EvtFn73LgDg)
 
 ## Requirements
 
@@ -21,6 +19,8 @@ The full list of requirements is listed on the wiki. At a bare minimum, you'll n
 ## Quickstart
 
 The Github wiki contains a host of information on working with HIDUINO. HIDUINO can be flashed onto the ATmega (8u2/16u2) chip on the UNO, Mega2560 and Due. Sketches cannot be bootloaded onto an Arduino while a HIDUINO firmware is loaded on the 8u2, so users can expect to switch between the default usbserial and HIDUINO firmwares regularly during development. The flashing process can be accomplished using an ISP (recommended) or through the DFU bootloader.
+
+If you are using the ISP method, an easier way of development is to flash the USB controller chip with HIDUINO just once. Then, in the Arduino IDE, you can select "Upload Using Programmer" and connect the ISP to the header block near the main chip. This means you can flash your new Arduino sketch from the IDE and never have to switch firmwares on the commandline. A major caveat of this method is that you can't debug values over serial. 
 
 Flashing the HIDUINO_MIDI firmware located in the Compiled Firmwares directory:
 
@@ -51,6 +51,9 @@ avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:usbserial_mega_16u2.hex 
 avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:usbserial_due_16u2.hex \
 -U lfuse:w:0xFF:m -U hfuse:w:0xD9:m -U efuse:w:0xF4:m -U lock:w:0x0F:m
 ```
+
+## A Note About Compiling
+Compiling the firmware from scratch lets you change the name of the USB device (default HIDUINO). Right now, the latest LUFA doesn't work with the the src in this repository, although the v1.0 tag will work with an older version of LUFA noted in the 1.0 tag description. 
 
 ## License
 
