@@ -1,1 +1,1 @@
-These firmwares can be compiled with the latest LUFA (130303). Put them in the Lufa/Projects folder and run make.
+These firmwares can be compiled LUFA (130303). Put them in the Lufa/Projects folder and run make. Warning: there is an issue with this release where HIDUINO is not recognized by a host computer as a MIDI device. Instead, use the v1.0 tag to compile from scratch. 
