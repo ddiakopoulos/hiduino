@@ -1,6 +1,8 @@
 # HIDUINO
 
-The HIDUINO project aims to provide precompiled firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega2560, or Due. These firmwares are built using the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). HIDUINO relies on Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip boards (e.g. Leonardo), nor older models that used an FTDI chip as USB controller (e.g. Duemilanove). 
+The HIDUINO project provides firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega 2560, or Due. HIDUINO does *not* use middleware software to convert serial messages through a MIDI loopback port. Instead, HIDUINO provides a true USB-MIDI device for plug-and-play compatibility on Windows, OSX, and Linux - just like a commercial MIDI controller. 
+
+HIDUINO is based on the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). HIDUINO relies on Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip boards (e.g. Leonardo), nor older models that used an FTDI chip as USB controller (e.g. Duemilanove). 
 
 Some good examples of HIDUINO:
 
