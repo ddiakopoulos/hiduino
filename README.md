@@ -1,8 +1,10 @@
 # HIDUINO
 
-The HIDUINO project provides firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO, Mega 2560, or Due. HIDUINO does *not* use middleware software to convert serial messages through a MIDI loopback port. Instead, HIDUINO provides a true USB-MIDI device for plug-and-play compatibility on Windows, OSX, and Linux - just like a commercial MIDI controller. 
+The HIDUINO project provides firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO or Mega 2560. HIDUINO does *not* use middleware software to convert serial messages through a MIDI loopback port (like LoopBe1 on Windows or IAC on OSX). Instead, HIDUINO provides a true USB-MIDI device for plug-and-play compatibility on Windows, OSX, and Linux - just like a commercial MIDI controller. 
 
-HIDUINO is based on the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). HIDUINO relies on Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip boards (e.g. Leonardo), nor older models that used an FTDI chip as USB controller (e.g. Duemilanove). 
+HIDUINO takes advantage of Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip variants (e.g. Leonardo), nor older boards that use an FTDI chip as USB controller (e.g. Duemilanove). 
+
+HIDUINO is based on the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). 
 
 Some good examples of HIDUINO:
 
@@ -20,9 +22,9 @@ The full list of requirements is listed on the wiki. At a bare minimum, you'll n
 
 ## Quickstart
 
-The Github wiki contains a host of information on working with HIDUINO. HIDUINO can be flashed onto the ATmega (8u2/16u2) chip on the UNO, Mega2560 and Due. Sketches cannot be bootloaded onto an Arduino while a HIDUINO firmware is loaded on the 8u2, so users can expect to switch between the default usbserial and HIDUINO firmwares regularly during development. The flashing process can be accomplished using an ISP (recommended) or through the DFU bootloader.
+The Github wiki contains a host of information on working with HIDUINO. HIDUINO can be flashed onto the ATmega (8u2/16u2) chip on the UNO and Mega2560. Sketches cannot be bootloaded onto an Arduino while a HIDUINO firmware is loaded on the 8u2, so users can expect to switch between the default usbserial and HIDUINO firmwares regularly during development. The flashing process can be accomplished using an ISP (recommended) or through the DFU bootloader.
 
-If you are using the ISP method, an easier way of development is to flash the USB controller chip with HIDUINO just once. Then, in the Arduino IDE, you can select "Upload Using Programmer" and connect the ISP to the header block near the main chip. This means you can flash your new Arduino sketch from the IDE and never have to switch firmwares on the commandline. A major caveat of this method is that you can't debug values over serial. 
+If using the ISP method, an easier way of development is to flash the USB controller chip with HIDUINO just once. Then, in the Arduino IDE, select  "Upload Using Programmer" and connect the ISP to the header block near the main chip. This means the Arduino sketch can be flashed from the IDE without commandline interaction via an ISP or DFU. While HIDUINO is loaded onto the USB controller, do not attempt Serial communication via Serial.print()/println(): this will interrupt MIDI serial stream on the USB controller. 
 
 Flashing the HIDUINO_MIDI firmware located in the Compiled Firmwares directory:
 
@@ -59,4 +61,4 @@ Compiling the firmware from scratch lets you change the name of the USB device (
 
 ## License
 
-HIDUINO is released under the MIT license.
+HIDUINO is released under the MIT license. HIDUINO inherits from the MIT license set by LUFA. A commercial license of LUFA is available for close-sourced products that do not wish to maintain MIT's attribution clause. 
