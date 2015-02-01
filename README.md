@@ -2,21 +2,23 @@
 
 The HIDUINO project provides firmwares, documentation, and example code for building a class-compliant USB-MIDI device from an Arduino UNO or Mega 2560. HIDUINO does *not* use middleware software to convert serial messages through a MIDI loopback port (like LoopBe1 on Windows or IAC on OSX). Instead, HIDUINO provides a true USB-MIDI device for plug-and-play compatibility on Windows, OSX, and Linux - just like a commercial MIDI controller. 
 
-HIDUINO takes advantage of Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip variants (e.g. Leonardo), nor older boards that use an FTDI chip as USB controller (e.g. Duemilanove). 
+HIDUINO takes advantage of Arduino boards where a second AVR chip is used as the USB controller, so it won't work with single chip variants (e.g. Leonardo), nor older boards that use an FTDI chip as USB controller (e.g. Duemilanove). Many cheap Arduino knockoffs that pretend to be an Uno or Mega also might not work, since they tend to use the (slighly) cheaper FTDI chips. 
 
 HIDUINO is based on the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). 
 
-Some good examples of HIDUINO:
+The project name refers to a time when it was intended to contain many USB-HID device types. Right now, its only function is USB-MIDI (anyway, the mididuino name has already been taken).
+
+Some good examples of HIDUINO in action:
 
 [mHzKontrol](http://www.youtube.com/watch?v=f4GCczAaD8A)
-
 [NotomotoN](http://vimeo.com/33365051)
+[Diaktoros](https://forum.libcinder.org/topic/madewithcinder-intel-realsense-at-ces-2015)
 
 ## Requirements
 
 The full list of requirements is listed on the wiki. At a bare minimum, you'll need:
 
-* Crosspack for OSX or WinAVR for Windows
+* Crosspack on OSX /or/ WinAVR on Windows
 * Latest Arduino IDE + [Latest Arduino MIDI Library](http://arduino.cc/playground/Main/MIDILibrary)
 * (Recommended) [AVRISPMKII](http://www.atmel.com/tools/AVRISPMKII.aspx)
 
@@ -26,10 +28,11 @@ The Github wiki contains a host of information on working with HIDUINO. HIDUINO 
 
 If using the ISP method, an easier way of development is to flash the USB controller chip with HIDUINO just once. Then, in the Arduino IDE, select  "Upload Using Programmer" and connect the ISP to the header block near the main chip. This means the Arduino sketch can be flashed from the IDE without commandline interaction via an ISP or DFU. While HIDUINO is loaded onto the USB controller, do not attempt Serial communication via Serial.print()/println(): this will interrupt MIDI serial stream on the USB controller. 
 
-Flashing the HIDUINO_MIDI firmware located in the Compiled Firmwares directory:
+Flashing the arduino_midi firmware located in the compiled_firmwares directory:
+*Note* Remove the slashes in a program like Notepad if you are on Windows. 
 
 ```Shell
-avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:HIDUINO_MIDI.hex \
+avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:arduino_midi.hex \
 -U lfuse:w:0xFF:m -U hfuse:w:0xD9:m -U efuse:w:0xF4:m -U lock:w:0x0F:m
 ```
 
@@ -57,7 +60,7 @@ avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:usbserial_due_16u2.hex \
 ```
 
 ## A Note About Compiling
-Compiling the firmware from scratch lets you change the name of the USB device (default HIDUINO). Right now, the latest LUFA doesn't work with the the src in this repository, although the v1.0 tag will work with an older version of LUFA noted in the 1.0 tag description. 
+Compiling the firmware from scratch lets you change the name of the USB device (default HIDUINO).
 
 ## License
 
