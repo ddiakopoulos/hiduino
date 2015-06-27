@@ -23,9 +23,9 @@
 	#include <LUFA/Platform/Platform.h>
 
 	#define LEDMASK_USB_NOTREADY      LEDS_LED1
-	#define LEDMASK_USB_ENUMERATING  (LEDS_LED2 | LEDS_LED3)
-	#define LEDMASK_USB_READY        (LEDS_LED2 | LEDS_LED4)
-	#define LEDMASK_USB_ERROR        (LEDS_LED1 | LEDS_LED3)
+	#define LEDMASK_USB_ENUMERATING   LEDS_LED2
+	#define LEDMASK_USB_READY         LEDS_LED2
+	#define LEDMASK_USB_ERROR         LEDS_LED1
 
 	void SetupHardware(void);
 	void MIDI_To_Arduino(void);
