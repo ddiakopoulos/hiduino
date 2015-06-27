@@ -28,7 +28,7 @@ int main(void)
 		}
 		else if (tx_ticks == 0)
 		{
-			LEDs_TurnOnLEDs(LEDS_LED2); // on = off?
+			LEDs_TurnOffLEDs(LEDS_LED2);
 		}
 									
 		if (rx_ticks > 0)
@@ -37,7 +37,7 @@ int main(void)
 		}
 		else if (rx_ticks == 0)
 		{
-			LEDs_TurnOnLEDs(LEDS_LED1); // on = off? 
+			LEDs_TurnOffLEDs(LEDS_LED1);
 		}
 			
 		MIDI_To_Arduino();
@@ -75,9 +75,6 @@ void SetupHardware(void)
 
 	LEDs_Init();
 	USB_Init();
-
-	LEDs_TurnOffLEDs(LEDS_LED1);
-	LEDs_TurnOffLEDs(LEDS_LED2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -141,7 +138,7 @@ void MIDI_To_Host(void)
 			// Send the data in the endpoint to the host
 			Endpoint_ClearIN();
 
-			LEDs_TurnOffLEDs(LEDS_LED2);
+			LEDs_TurnOnLEDs(LEDS_LED2);
 			tx_ticks = TICK_COUNT; 
 		}
 	}
@@ -170,7 +167,7 @@ void MIDI_To_Arduino(void)
 		Serial_SendByte(MIDIEvent.Data2); 
 		Serial_SendByte(MIDIEvent.Data3); 
 
-		LEDs_TurnOffLEDs(LEDS_LED1);
+		LEDs_TurnOnLEDs(LEDS_LED1);
 		rx_ticks = TICK_COUNT;
 
 		/* If the endpoint is now empty, clear the bank */
