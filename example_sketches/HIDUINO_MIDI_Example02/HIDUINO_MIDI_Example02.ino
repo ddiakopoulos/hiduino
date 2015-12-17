@@ -1,26 +1,31 @@
-/***********************************************************************
- *  HIDUINO_MIDI_Example02
- *  Example: MIDI Input
- *  by Dimitri Diakopoulos (http:// www.dimitridiakopoulos.com)
- *  Last Updated: 17 January 2013
- *************************************************************************/
+///////////////////////////////////////////////////////////
+//  midi_input.ino                                       //
+//  Example: MIDI Input                                  //
+//  https://github.com/ddiakopoulos/hiduino              //
+//  Last Updated: 17 December 2015                       //
+///////////////////////////////////////////////////////////
 
 #include <MIDI.h>
 
-void HandleNoteOn(byte channel, byte pitch, byte velocity) { 
+MIDI_CREATE_DEFAULT_INSTANCE();
+
+void HandleNoteOn(byte channel, byte pitch, byte velocity) 
+{ 
   // Do something here with your data!
 }
 
-void HandleCC(byte channel, byte pitch, byte velocity) {
+void HandleCC(byte channel, byte pitch, byte velocity) 
+{
   // Do something here with your data!
 }
 
-void HandleNoteOff(byte channel, byte pitch, byte velocity) {
+void HandleNoteOff(byte channel, byte pitch, byte velocity) 
+{
   // Do something here with your data!
 }
 
-
-void setup() {
+void setup() 
+{
   
   MIDI.begin(MIDI_CHANNEL_OMNI);
   
@@ -32,7 +37,7 @@ void setup() {
   
 }
 
-
-void loop() {
+void loop() 
+{
   MIDI.read();
 }
