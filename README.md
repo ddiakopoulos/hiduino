@@ -65,6 +65,11 @@ avrdude -p at90usb82 -F -P usb -c avrispmkii -U flash:w:usbserial_due_16u2.hex \
 ## A Note About Compiling
 Compiling the firmware from scratch lets you change the name of the USB device (default HIDUINO).
 
+## Similar Projects
+* [HID](https://github.com/NicoHood/HID) - MIDI-capable HID implementation for 32u4-based-Arduino boards (Leonardo) or Uno/Mega with custom bootloader
+* [arcore](https://github.com/rkistner/arcore) - Similar to HID but only for USB-MIDI on Leonardo
+* [mocoLUFA](https://github.com/kuwatay/mocolufa) - Combined midi/usb-serial firmware
+
 ## License
 
 HIDUINO is released under the MIT license. HIDUINO inherits from the MIT license set by LUFA. A commercial license of LUFA is available for close-sourced products that do not wish to maintain MIT's attribution clause. 
