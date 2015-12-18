@@ -19,8 +19,11 @@ Some good examples of HIDUINO in action:
 The full list of requirements is listed on the wiki. At a bare minimum, you'll need:
 
 * Crosspack on OSX /or/ WinAVR on Windows
-* Latest Arduino IDE + [Latest Arduino MIDI Library](http://arduino.cc/playground/Main/MIDILibrary)
+* Arduino IDE 1.6.7 & [Latest Arduino MIDI Library](https://github.com/FortySevenEffects/arduino_midi_library)
 * (Recommended) [AVRISPMKII](http://www.atmel.com/tools/AVRISPMKII.aspx)
+
+## MIDI Library
+Since HIDUINO doesn't come with code for consuming or producing MIDI data in sketches themselves, a separate Arduino library must be used to encode/decode the MIDI format inbetween the HIDUINO firmware and the sketch. Notably, the standard Arduino midi library has not been updated to use the most recent "properties" file format, but details on this can be found on the [wiki](https://github.com/ddiakopoulos/hiduino/wiki/arduino_midi-library.properties). 
 
 ## Quickstart
 
