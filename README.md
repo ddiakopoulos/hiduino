@@ -6,7 +6,7 @@ HIDUINO takes advantage of Arduino boards where a second AVR chip is used as the
 
 HIDUINO is based on the [LUFA framework](https://github.com/abcminiuser/lufa-lib) by [Dean Camera](http://www.fourwalledcubicle.com/). HIDUINO was previously developed for robotic instruments and new musical interfaces @ the [California Institute of the Arts](http://mtiid.calarts.edu). 
 
-The project name refers to a time when it was intended to contain many USB-HID device types. Right now, its only function is USB-MIDI (anyway, the mididuino name has already been taken).
+The project name refers to a time when it was intended to contain many different USB-HID device types (joystick, mouse, keyboard, etc). The name "mididuino" is in use by an existing project, though it would be a more fitting title for this project.
 
 Some good examples of HIDUINO in action:
 
